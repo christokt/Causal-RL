@@ -1,6 +1,7 @@
 """
 Causal world model with inference networks
 """
+import numpy as np
 
 import torch
 import torch.nn as nn
