@@ -3,7 +3,7 @@ UE and BS agents using Q-learning
 """
 
 import numpy as np
-from typing import Dict
+from typing import Dict, Tuple
 from config import Config
 
 class UEAgent:
