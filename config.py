@@ -24,7 +24,12 @@ class Config:
     ALPHA_COLLISION = 5.0
     ALPHA_LOSS = 15.0
     ALPHA_EFFICIENCY = 0.1
-    
+    # In config.py, increase loss penalty:
+    W_LOSS = 3.0        # Was 1.5, now 3.0 (stronger penalty)
+    ALPHA_LOSS = 20.0   # Was 15.0, now 20.0 (harsher punishment)
+
+    # Or increase goodput reward:
+    ALPHA_GOODPUT = 15.0  # Was 10.0, now 15.0 (better incentive)
     # Q-learning parameters
     LEARNING_RATE_Q = 0.1
     DISCOUNT_FACTOR = 0.95        # γ
