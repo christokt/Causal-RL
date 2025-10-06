@@ -1,7 +1,7 @@
 """
 Configuration file for all hyperparameters
 """
-
+import torch
 class Config:
     # Environment parameters
     NUM_UES = 8                    # L: Number of UEs
