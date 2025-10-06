@@ -1,7 +1,9 @@
 """
-Configuration file for all hyperparameters
+Configuration file for all hyperparameters - FIXED VERSION
 """
+
 import torch
+
 class Config:
     # Environment parameters
     NUM_UES = 8                    # L: Number of UEs
@@ -10,54 +12,18 @@ class Config:
     MAX_BUFFER_SIZE = 50
     
     # Episode parameters
-    MAX_EPISODE_LENGTH = 5000     # Maximum slots per episode
-    NUM_EPISODES = 2000           # Training episodes
+    MAX_EPISODE_LENGTH = 3000     # ✅ Reduced from 5000 (force faster learning)
+    NUM_EPISODES = 1000           # Training episodes
     
-    # Reward weights
+    # ============= ✅ FIXED REWARD WEIGHTS =============
     W_GOODPUT = 1.0
-    W_COLLISION = 0.5
-    W_LOSS = 1.5
-    W_EFFICIENCY = 0.1
+    W_COLLISION = 0.2              # ✅ Reduced from 0.5 (less afraid of collisions)
+    W_LOSS = 5.0                   # ✅ Increased from 1.5 (punish losses harder)
+    W_EFFICIENCY = 0.05            # ✅ Reduced from 0.1
     
     # Reward values
-    ALPHA_GOODPUT = 10.0
-    ALPHA_COLLISION = 5.0
-    ALPHA_LOSS = 15.0
+    ALPHA_GOODPUT = 20.0           # ✅ Increased from 10.0 (reward success more)
+    ALPHA_COLLISION = 3.0          # ✅ Reduced from 5.0 (less penalty)
+    ALPHA_LOSS = 30.0              # ✅ Increased from 15.0 (harsh penalty)
     ALPHA_EFFICIENCY = 0.1
-    # In config.py, increase loss penalty:
-    W_LOSS = 3.0        # Was 1.5, now 3.0 (stronger penalty)
-    ALPHA_LOSS = 20.0   # Was 15.0, now 20.0 (harsher punishment)
-
-    # Or increase goodput reward:
-    ALPHA_GOODPUT = 15.0  # Was 10.0, now 15.0 (better incentive)
-    # Q-learning parameters
-    LEARNING_RATE_Q = 0.1
-    DISCOUNT_FACTOR = 0.95        # γ
-    EPSILON_START = 0.3
-    EPSILON_END = 0.05
-    EPSILON_DECAY = 500           # Episodes to decay over
-    
-    # PPO parameters
-    LEARNING_RATE_PPO = 3e-4
-    PPO_EPOCHS = 10               # K: Number of PPO update epochs
-    PPO_CLIP_EPSILON = 0.2        # ε for clipping
-    GAE_LAMBDA = 0.95             # λ for GAE
-    MINI_BATCH_SIZE = 256         # M
-    
-    # Causal world model parameters
-    HIDDEN_DIM = 128              # d_h: Embedding dimension
-    N_GRAPH_UPDATE = 50           # Update causal graph every n episodes
-    K_STEP_ROLLOUT = 5            # k-step model rollout
-    HISTORY_WINDOW = 5            # N: History length
-    
-    # Counterfactual planning
-    PLANNING_HORIZON = 5          # H: Lookahead steps for BS
-    
-    # Replay buffer
-    BUFFER_SIZE = 50000
-    
-    # Target PLR constraint
-    MAX_PLR = 0.05                # 5% maximum packet loss rate
-    
-    # Device
-    DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # ==============================================
