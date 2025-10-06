@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from config import Config
 from environment import WirelessSchedulingEnv
 from causal_model import CausalWorldModel, train_world_model
-from agents import UEAgent, BSAgent
+from safe_agents import SafeUEAgent, BSAgent  # ✅ Changed from: from agents import UEAgent, BSAgent
 from ppo import PPOAgent
 
 class ReplayBuffer:
