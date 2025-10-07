@@ -1,6 +1,7 @@
 """
 Example script to run complete experiments
 """
+from safe_agents import SafeUEAgent, BSAgent  # ✅ Changed from: from agents import UEAgent, BSAgent
 
 import numpy as np
 import torch
