@@ -63,16 +63,6 @@ def set_seed(seed):
 def evaluate_policy(env, ue_agents, bs_agent, num_episodes=100, deterministic=True):
     """
     Evaluate trained policy
-    
-    Args:
-        env: Environment
-        ue_agents: List of trained UE agents
-        bs_agent: Trained BS agent
-        num_episodes: Number of evaluation episodes
-        deterministic: If True, use deterministic policy (no exploration)
-    
-    Returns:
-        Dictionary with evaluation metrics
     """
     episode_lengths = []
     episode_goodputs = []
@@ -90,9 +80,16 @@ def evaluate_policy(env, ue_agents, bs_agent, num_episodes=100, deterministic=Tr
             for u in range(len(ue_agents)):
                 state = env.get_ue_state(u)
                 
-                if hasattr(ue_agents[u], 'Q'):  # Q-learning
-                    action = ue_agents[u].select_action(state, env.buffers[u], 
-                                                       explore=not deterministic)
+                if hasattr(ue_agents[u], 'Q'):  # Q-learning (SafeUEAgent)
+                    last_collision = env.collision_history[-1] if len(env.collision_history) > 0 else False
+                    # ✅ Pass extra parameters for SafeUEAgent
+                    action = ue_agents[u].select_action(
+                        state, 
+                        env.buffers[u],
+                        env.last_actions[u],
+                        last_collision,
+                        explore=not deterministic
+                    )
                 else:  # PPO
                     action, _, _ = ue_agents[u].select_action(state, deterministic)
                 
