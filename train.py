@@ -140,26 +140,23 @@ def model_rollout(env: WirelessSchedulingEnv, ue_agents: List, bs_agent,
 def train_causal_marl(config: Config, use_ppo: bool = False):
     """
     Main training loop (Algorithm 1 and Algorithm 2)
-    
-    Args:
-        config: Configuration object
-        use_ppo: If True, use PPO; if False, use Q-learning
     """
     # Initialize environment
     env = WirelessSchedulingEnv(config)
     
-    # Initialize agents
+    # ✅ Initialize agents - USING SAFE AGENTS
     if use_ppo:
         ue_agents = [PPOAgent(state_dim=5, action_dim=3, config=config) 
                     for _ in range(config.NUM_UES)]
     else:
-        ue_agents = [UEAgent(u, config, state_dim=5) 
+        # ✅ Use SafeUEAgent instead of UEAgent
+        ue_agents = [SafeUEAgent(u, config, state_dim=5) 
                     for u in range(config.NUM_UES)]
     
     bs_agent = BSAgent(config, config.NUM_UES)
-    
-    # Initialize causal world model
     causal_model = CausalWorldModel(config).to(config.DEVICE)
+    
+    # ... rest of the function
     
     # Initialize replay buffer
     replay_buffer = ReplayBuffer(config.BUFFER_SIZE)
