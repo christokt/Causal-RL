@@ -134,12 +134,15 @@ class WirelessSchedulingEnv:
         # Channel utilization (penalize idling)
         num_idle = np.sum(actions == 0)
         r_efficiency = cfg.ALPHA_EFFICIENCY * (self.L - num_idle)
-        
+         # ✅ ADD: Penalty for having packets remaining (urgency)
+        total_remaining = np.sum(self.buffers)
+        r_urgency = -0.01 * total_remaining  # Small penalty per packet remaining
         # Total reward
         reward = (cfg.W_GOODPUT * r_goodput + 
                  cfg.W_COLLISION * r_collision + 
                  cfg.W_LOSS * r_loss + 
-                 cfg.W_EFFICIENCY * r_efficiency)
+                 cfg.W_EFFICIENCY * r_efficiency +
+                 r_urgency)
         
         return reward
     
