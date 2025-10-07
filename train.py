@@ -191,7 +191,7 @@ def train_causal_marl(config: Config, use_ppo: bool = False):
         done = False
         step = 0
         
-        # Collect trajectory (Algorithm 1, line 3)
+       # Collect trajectory (Algorithm 1, line 3)
         while not done:
             # Each UE selects action
             ue_actions = []
@@ -209,7 +209,15 @@ def train_causal_marl(config: Config, use_ppo: bool = False):
                     ue_log_probs.append(log_prob)
                     ue_values.append(value)
                 else:
-                    action = ue_agents[u].select_action(state, env.buffers[u])
+                    # ✅ Pass additional safety information to SafeUEAgent
+                    last_collision = env.collision_history[-1] if len(env.collision_history) > 0 else False
+                    action = ue_agents[u].select_action(
+                        state, 
+                        env.buffers[u],
+                        env.last_actions[u],  # Pass last action
+                        last_collision,        # Pass collision info
+                        explore=True
+                    )
                 
                 ue_actions.append(action)
             
